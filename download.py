@@ -1,13 +1,11 @@
-# In this file, we define download_model
-# It runs during container build time to get model weights built into the container
-
-# In this example: A Huggingface BERT model
-
-from transformers import pipeline
+from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler
 
 def download_model():
-    # do a dry run of loading the huggingface model, which will download weights
-    pipeline('fill-mask', model='bert-base-uncased')
+    model_id = "timbrooks/instruct-pix2pix"
+    pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(model_id, torch_dtype=torch.float16, safety_checker=None)
+    pipe.to("cuda")
+    pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+
 
 if __name__ == "__main__":
     download_model()
