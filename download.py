@@ -1,4 +1,5 @@
 from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler
+import torch
 
 def download_model():
     model_id = "timbrooks/instruct-pix2pix"
