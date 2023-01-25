@@ -17,25 +17,28 @@ def init():
     model.to("cuda")
     model.scheduler = EulerAncestralDiscreteScheduler.from_config(model.scheduler.config)
 
-
-def download_image(url):
-    image = PIL.Image.open(requests.get(url, stream=True).raw)
-    image = PIL.ImageOps.exif_transpose(image)
-    image = image.convert("RGB")
-    return image
-
 # Inference is ran for every server call
 # Reference your preloaded global model variable here.
 def inference(model_inputs:dict) -> dict:
     global model
 
     # Parse out your arguments
-    prompt = model_inputs.get('prompt', 'blue skin')
-    image_url = model_inputs.get('url', 'https://avatars.githubusercontent.com/u/1288106?s=400&u=7a91d67df3f308c76ceda288237b150d1bf859d2&v=4')
-    image_downloaded = download_image(image_url)
+    prompt = model_inputs.get('prompt', None)
+    image_base64 = model_inputs.get('image', None)
+    
+    if prompt == None:
+        return {'message': "No prompt provided"}
+    if image_base64 == None:
+        return {'message': "No image provided"}
+    
+    steps = model_inputs.get('steps', 30)
+    image_guidance = model_inputs.get('image_guidance', 1.5)
+    guidance_scale = model_inputs.get('guidance_scale', 7.5)
+    negative_prompt = model_inputs.get('negative_prompt', None)
+    image_downloaded = PIL.Image.open(BytesIO(base64.b64decode(image_base64))).convert("RGB")
     
     # Run the model
-    images = model(prompt, image=image_downloaded, num_inference_steps=10, image_guidance_scale=1).images
+    images = model(prompt, image=image_downloaded, num_inference_steps=steps, guidance_scale=guidance_scale, negative_prompt=negative_prompt, image_guidance_scale=image_guidance).images
 
     # Return the results as a dictionary
     buffered = BytesIO()
