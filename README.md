@@ -1,20 +1,14 @@
 
-# 🍌 Banana Serverless
+# 🍌 Banana Serverless instruct pix2pix
 
-This repo gives a framework to serve ML models in production using simple HTTP servers.
-
-# Quickstart
-**[Follow the quickstart guide in Banana's documentation to use this repo](https://docs.banana.dev/banana-docs/quickstart).** 
-
-*(choose "GitHub Repository" deployment method)*
-
-<br>
-
-# Helpful Links
-Understand the 🍌 [Serverless framework](https://docs.banana.dev/banana-docs/core-concepts/inference-server/serverless-framework) and functionality of each file within it.
-
-Generalize this framework to [deploy anything on Banana](https://docs.banana.dev/banana-docs/resources/how-to-serve-anything-on-banana).
-
-<br>
-
-## Use Banana for scale.
+Mandatory inputs:
+ - prompt: string
+ - image: base64 image string (needs to be max 512x512)
+  
+Optional:
+ - image_guidance: float default to 1.5
+ - guidance_scale: float default to 7.5
+ - negative_prompt: string default to None
+ 
+ Returns:
+ base64 image string
