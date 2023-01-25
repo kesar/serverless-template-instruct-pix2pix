@@ -1,5 +1,5 @@
 # Must use a Cuda version 13+
-FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel
+FROM runpod/pytorch:3.9-1.13.1-116
 
 WORKDIR /
 
